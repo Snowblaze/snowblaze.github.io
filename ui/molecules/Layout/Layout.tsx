@@ -22,7 +22,7 @@ const Layout: FC<Props> = ({
         <Header />
         <Box
           sx={{
-            flex: 1,
+            width: "100%",
             padding: {
               base: "32px 16px",
               md: "48px 24px",

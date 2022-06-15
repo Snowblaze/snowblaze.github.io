@@ -6,7 +6,11 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialOceanic } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Box, Heading, IconButton, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
+import cpp from "react-syntax-highlighter/dist/cjs/languages/prism/cpp";
+import cmake from "react-syntax-highlighter/dist/cjs/languages/prism/cmake";
 
+SyntaxHighlighter.registerLanguage('cpp', cpp);
+SyntaxHighlighter.registerLanguage('cmake', cmake);
 
 type Props = {
   content: string,
