@@ -30,6 +30,7 @@ const PostHeader: FC<Props> = ({
           alt={`Cover Image for ${title}`}
           layout="fill"
           priority
+          placeholder="blur"
         />
       </Box>
       {/*<div className="mb-8 md:mb-16 sm:mx-0">*/}
