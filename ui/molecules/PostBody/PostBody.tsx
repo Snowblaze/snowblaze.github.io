@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import { CopyToClipboard } from "react-copy-to-clipboard";
