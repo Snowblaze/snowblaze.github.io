@@ -400,7 +400,7 @@ void Game::GenerateOutput()
 
 When we run the application now, we can see a white rectangle in the center of the screen.
 
-As we are going to change the character’s position in the *UpdateGame* function, let’s store it as a member variable in *Game.hpp*. Declare a *Vector2* struct, which will represent a point in 2D, and add a member variable for the character’s position and initialize it in the *Initialize* function.
+As we are going to change the character’s position in the *UpdateGame* function, let’s store it as a member variable in *Game.hpp*. Declare a *Vector2* struct, which will represent a point in 2D space, and add a member variable for the character’s position and initialize it in the *Initialize* function.
 
 Game.hpp:
 
@@ -453,8 +453,8 @@ void Game::GenerateOutput()
 
 	// Draw the character
 	SDL_Rect character{
-		static_cast<int>(mCharacterPos.x - 50 / 2),
-		static_cast<int>(mCharacterPos.y - 50 / 2),
+		static_cast<int>(mCharacterPos.x - 50),
+		static_cast<int>(mCharacterPos.y - 50),
 		100,
 		100
 	};
@@ -464,6 +464,131 @@ void Game::GenerateOutput()
 }
 ```
 
-Character’s movement is the only thing left to implement. To calculate how much should the character move in any direction, we should determine how much time elapsed since the last frame.
+Character’s movement is the only thing left to implement. To calculate how much should the character move in any direction, we should determine how much time elapsed since the last frame. Let's call that value **delta time**.
 
-Now let’s add W, A, S, D keyboard button handling to the ProcessInput function:
+SDL provides a function named *SDL_GetTicks* that returns the number of milliseconds elapsed since the *SDL_Init* call. We can save the result of a previous frame in a variable and use it with the current one to calculate delta time.
+
+```cpp
+Uint32 mTicksCount;
+```
+
+Let's update our *UpdateGame* function:
+
+```cpp
+void Game::UpdateGame()
+{
+	// Delta time is the difference in ticks from last frame
+	// (converted to seconds)
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+
+	// Update tick counts (for next frame)
+	mTicksCount = SDL_GetTicks();
+}
+```
+
+It may seem like it will do the trick, but actually there is an issue when running the game with different frame rates, especially if the game relies on physics.
+
+We can limit the FPS by forcing the game loop to wait until the required delta time is achieved. That is called **frame limiting**. So, if we want 60 FPS and the frame completes in 15ms, the game loop will wait 1.6ms to achieve 16.6ms (1000ms / 60 FPS).
+
+SDL provides a function just for that.
+
+```cpp
+void Game::UpdateGame()
+{
+	// Wait until 16ms has elapsed since last frame
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+
+	// Other code here...
+}
+```
+
+This was only fixing the lower limit, but we still have to fix the upper limit. What if the device takes too long to process a frame or you paused the game at a breakpoint for debugging purposes and later unpaused. To fix this problem we can clamp the delta time.
+
+```cpp
+void Game::UpdateGame()
+{
+	// Other code here...
+
+	// Clamp maximum delta time value
+	if (deltaTime > 0.05f)
+	{
+		deltaTime = 0.05f;
+	}
+}
+```
+
+Let's add a vector in *Game.hpp* for storing the movement direction of our character:
+
+```cpp
+Vector2 mMovementDir;
+```
+
+Now we can handle W, A, S, D keyboard buttons in the ProcessInput function and update the movement direction:
+
+```cpp
+void Game::ProcessInput()
+{
+	// Other code here...
+
+	mMovementDir.x = 0;
+	mMovementDir.y = 0;
+	if (state[SDL_SCANCODE_W])
+	{
+		mMovementDir.y -= 1;
+	}
+	if (state[SDL_SCANCODE_S])
+	{
+		mMovementDir.y += 1;
+	}
+	if (state[SDL_SCANCODE_A])
+	{
+		mMovementDir.x -= 1;
+	}
+	if (state[SDL_SCANCODE_D])
+	{
+		mMovementDir.x += 1;
+	}
+}
+```
+
+And finally we can update our character's position:
+
+```cpp
+void Game::UpdateGame()
+{
+	// Other code here...
+
+	mCharacterPos.y += mMovementDir.y * 300.0f * deltaTime;
+	mCharacterPos.x += mMovementDir.x * 300.0f * deltaTime;
+}
+```
+
+We got the character moving, but now it can go off the screen, so let's add boundaries:
+
+```cpp
+void Game::UpdateGame()
+{
+	// Other code here...
+	
+	if (mCharacterPos.y < (100.0f / 2.0f))
+	{
+		mCharacterPos.y = 100.0f / 2.0f;
+	}
+	else if (mCharacterPos.y > (768.0f - 100.0f / 2.0f))
+	{
+		mCharacterPos.y = 768.0f - 100.0f / 2.0f;
+	}
+	if (mCharacterPos.x < (100.0f / 2.0f))
+	{
+		mCharacterPos.x = 100.0f / 2.0f;
+	}
+	else if (mCharacterPos.x > (1024.0f - 100.0f / 2.0f))
+	{
+		mCharacterPos.x = 1024.0f - 100.0f / 2.0f;
+	}
+}
+```
+
+With this code in place we achieved this part's goal of drawing and controlling a rectangular character.
+
+## Conclusion
