@@ -2,7 +2,7 @@ import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { format, parseISO } from "date-fns";
-import {Box, Heading, Text, useColorMode} from "@chakra-ui/react";
+import { Box, Heading, Text, useColorMode } from "@chakra-ui/react";
 
 type Props = {
   title: string,
@@ -47,14 +47,14 @@ const PostPreview: FC<Props> = ({
               md: "flex",
             },
             position: "relative",
-            width: "294px",
-            height: "165px",
           }}
         >
           <Image
             src={coverImage}
             alt={`Cover Image for ${title}`}
-            layout="fill"
+            width="294px"
+            height="165px"
+            objectFit="cover"
           />
         </Box>
         <Box

@@ -21,14 +21,15 @@ const PostHeader: FC<Props> = ({
       <Box
         sx={{
           position: "relative",
-          width: "100%",
-          aspectRatio: "1.78",
         }}
       >
         <Image
           src={coverImage}
           alt={`Cover Image for ${title}`}
-          layout="fill"
+          layout="responsive"
+          width="700px"
+          height="300px"
+          objectFit="cover"
           priority
           placeholder="blur"
         />
