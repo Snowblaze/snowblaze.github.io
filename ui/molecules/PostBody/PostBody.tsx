@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FC } from "react";
 import ReactMarkdown from "react-markdown";
-import { Box, Heading, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react";
+import { Box, Heading, Link, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react";
 import CodeBlock from "../../../components/CodeBlock";
 
 type Props = {
@@ -28,6 +28,11 @@ const PostBody: FC<Props> = ({
           h3: ({node, ...props}) => {
             return (
               <Heading {...props} as="h3" size="md" mt="24px" />
+            );
+          },
+          a: ({node, ...props}) => {
+            return (
+              <Link {...props} color="blue.600" />
             );
           },
           p: ({node, ...props}) => {

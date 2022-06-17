@@ -25,13 +25,11 @@ const Layout: FC<Props> = ({
             width: "100%",
             padding: {
               base: "32px 16px",
-              md: "48px 24px",
-              lg: "48px 0",
+              md: "48px 0",
             },
             minWidth: {
               base: "100%",
-              md: "748px",
-              lg: "700px",
+              md: "700px",
             },
             maxWidth: "700px",
             margin: "auto",

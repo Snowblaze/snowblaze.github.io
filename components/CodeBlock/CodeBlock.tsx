@@ -20,7 +20,6 @@ const CodeBlock: FC<CodeProps> = ({
 }) => {
   const match = /language-(\w+)/.exec(className || '');
 
-  console.log('asdasd');
   return !inline && match
     ? (
       <>
