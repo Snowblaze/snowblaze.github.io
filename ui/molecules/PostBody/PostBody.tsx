@@ -40,17 +40,17 @@ const PostBody: FC<Props> = ({
               <Text {...props} my="24px" />
             );
           },
-          ul: ({node, ...props}) => {
+          ul: ({node, ordered, ...props}) => {
             return (
               <UnorderedList {...props} my="24px" spacing="8px" ml="32px" />
             );
           },
-          ol: ({node, ...props}) => {
+          ol: ({node, ordered, ...props}) => {
             return (
               <OrderedList {...props} my="24px" spacing="8px" ml="32px" />
             );
           },
-          li: ({node, ...props}) => {
+          li: ({node, ordered, ...props}) => {
             return (
               <ListItem {...props} />
             );

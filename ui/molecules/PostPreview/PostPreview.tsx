@@ -1,8 +1,15 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { format, parseISO } from "date-fns";
-import { Box, Heading, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Icon,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
+import { BsBook } from "react-icons/bs";
+import transformDate from "../../../lib/date";
 
 type Props = {
   title: string,
@@ -10,6 +17,7 @@ type Props = {
   date: string,
   excerpt: string,
   slug: string,
+  readTime: string,
 }
 
 const PostPreview: FC<Props> = ({
@@ -18,6 +26,7 @@ const PostPreview: FC<Props> = ({
   date,
   excerpt,
   slug,
+  readTime,
 }) => {
   const { colorMode } = useColorMode();
 
@@ -74,13 +83,31 @@ const PostPreview: FC<Props> = ({
           </Box>
           <Box
             sx={{
+              display: "flex",
+              gap: "12px",
+              alignItems: "center",
               marginTop: "8px",
               marginBottom: "8px",
             }}
           >
             <Text color="gray.500" fontSize="sm">
-              <time dateTime={date}>{format(parseISO(date), 'LLLL	d, yyyy')}</time>
+              <time dateTime={date}>{transformDate(date)}</time>
             </Text>
+            <Text color="gray.500" fontSize="sm">
+              •
+            </Text>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
+              }}
+            >
+              <Icon as={BsBook} color="gray.500" fontSize="sm" />
+              <Text color="gray.500" fontSize="sm">
+                {`${readTime} read`}
+              </Text>
+            </Box>
           </Box>
           <Box
             sx={{

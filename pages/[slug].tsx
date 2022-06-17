@@ -1,11 +1,11 @@
 import { FC } from "react";
 import { GetStaticProps } from "next";
-// import { Head } from "next/document";
 import { getAllPosts, getPostBySlug } from "../lib/api";
 import Post from "../types/Post";
 import Layout from "../ui/molecules/Layout";
 import PostHeader from "../ui/molecules/PostHeader";
 import PostBody from "../ui/molecules/PostBody";
+import Seo from "../components/Seo";
 
 type Props = {
   post: Post,
@@ -16,16 +16,18 @@ const Post: FC<Props> = ({
 }) => {
   return (
     <Layout>
+      <Seo
+        title={post.title}
+        description={post.excerpt}
+        ogImageUrl={`https://snowblaze.github.io${post.ogImage}`}
+        url={`https://snowblaze.github.io/${post.slug}`}
+      />
       <article>
-        {/*<Head>*/}
-        {/*  <title>{post.title}</title>*/}
-        {/*  <meta name="description" content={post.excerpt} />*/}
-        {/*  <meta property="og:image" content={post.ogImage} />*/}
-        {/*</Head>*/}
         <PostHeader
           title={post.title}
           coverImage={post.coverImage}
           date={post.date}
+          readTime={post.readTime}
         />
         <PostBody content={post.content} />
       </article>
@@ -57,6 +59,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({ 
     "ogImage",
     "coverImage",
     "excerpt",
+    "readTime",
   ]);
 
   return {

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import {
   Box,
-  Switch,
+  Icon,
+  IconButton,
   Heading,
   useColorMode,
 } from "@chakra-ui/react";
@@ -69,7 +70,7 @@ const Header = () => {
             </Box>
             <Box>
               <Heading>
-                Blog
+                Snowblaze
               </Heading>
             </Box>
           </Box>
@@ -81,16 +82,28 @@ const Header = () => {
             gap: "8px",
           }}
         >
-          <Switch
-            onChange={toggleColorMode}
-            isChecked={colorMode === "light"}
-          />
           {
             colorMode === "light"
               ? (
-                <SunIcon boxSize={{ base: "24px" }} />
+                <IconButton
+                  aria-label="Turn on Dark mode"
+                  icon={<Icon as={SunIcon} />}
+                  fontSize="24px"
+                  size="md"
+                  isRound
+                  variant="ghost"
+                  onClick={toggleColorMode}
+                />
               ) : (
-                <MoonIcon boxSize={{ base: "24px" }} />
+                <IconButton
+                  aria-label="Turn on Light mode"
+                  icon={<Icon as={MoonIcon} />}
+                  fontSize="24px"
+                  size="md"
+                  isRound
+                  variant="ghost"
+                  onClick={toggleColorMode}
+                />
               )
           }
         </Box>

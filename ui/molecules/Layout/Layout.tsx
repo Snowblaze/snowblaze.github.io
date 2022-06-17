@@ -32,7 +32,7 @@ const Layout: FC<Props> = ({
               md: "700px",
             },
             maxWidth: "700px",
-            margin: "auto",
+            margin: "0 auto",
           }}
         >
           {children}

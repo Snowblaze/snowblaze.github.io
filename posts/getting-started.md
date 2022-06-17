@@ -1,16 +1,12 @@
 ---
 title: "Game Engine Tutorial Series Part 1: Introduction"
 excerpt: "Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional"
-coverImage: "/Introduction/getting-started.jpg"
-date: "2020-03-16T05:35:07.322Z"
-author:
-name: JJ Kasper
-picture: "/assets/blog/authors/jj.jpeg"
-ogImage:
-url: "/assets/blog/dynamic-routing/cover.jpg"
+coverImage: "/Introduction/getting-started-cover.jpg"
+date: "2022-06-18T12:00:00.000Z"
+author: Arman Matinyan
+ogImage: "/Introduction/getting-started-og.jpg"
+readTime: "15 min"
 ---
-
-## Introduction
 
 Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll be exploring how to write a simple engine for a hobby game project (yeah, I know, seems like reinventing the wheel, haha). In this part we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
 
