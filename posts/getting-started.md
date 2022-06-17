@@ -12,7 +12,7 @@ url: "/assets/blog/dynamic-routing/cover.jpg"
 
 ## Introduction
 
-Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll be exploring how to write a simple engine for a hobby game project. In this part we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
+Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll be exploring how to write a simple engine for a hobby game project (yeah, I know, seems like reinventing the wheel, haha). In this part we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
 
 ## What is a game engine?
 
@@ -48,8 +48,6 @@ In our case, firstly, we will be detecting the user's keyboard input. Then the g
 
 For developing a game we need to set up our environment. My language of choice will be C++ as it is the primary game development language. And the most popular IDE for development with it on Windows is Visual Studio, so I'll be going with Visual Studio Community Edition 2022 (for MacOS – XCode).
 
-Steps
-
 1. Download and install Visual Studio ([link](https://visualstudio.microsoft.com/vs/community/))
 2. In the windows for choosing workload, add **Desktop development with C++**
     ![Workload](/Introduction/Workload.png)
@@ -58,9 +56,7 @@ Steps
 
 Unfortunately C++ Standard Library doesn't have any graphics-related libraries built in. For our purposes we should use an external library, such as SDL, which is cross-platform. That will help us make games for many different platforms. Using SDL we can get the user's input, and render our character on screen.
 
-Steps
-
-1. Download the development library from https://www.libsdl.org/ for your platform
+1. Download the development library from [https://www.libsdl.org/](https://www.libsdl.org/) for your platform
 2. Create a folder named "external" in project's root directory
 3. Create another folder named "sdl" inside the newly created folder and extract the library there
 4. Open the CMakeLists.txt located in the root folder, add the include directory and link the library, so that you have the following:
@@ -92,11 +88,11 @@ target_link_libraries(Engine ${SDL2_LIBRARIES})
 
 **Note**: In later chapters we will move to using other graphics APIs like Vulkan and Metal.
 
-The source code for this tutorial series is available on GitHub at https://github.com/Snowblaze-Studio/game-engine. The final code for this part of the tutorial can be found under the tag "part-1-introduction".
+The source code for this tutorial series is available on GitHub at [https://github.com/Snowblaze-Studio/game-engine](https://github.com/Snowblaze-Studio/game-engine). The final code for this part of the tutorial can be found under the tag "part-1-introduction".
 
 ## Sample game
 
-Let’s create a *Game* class that will define the initialization and shutdown of our game, as well as starting the game loop.
+Let’s start with creating a *Game* class that will define the initialization and shutdown of our game, as well as starting the game loop.
 
 Create a file *Game.hpp* with the following declaration.
 
@@ -137,7 +133,7 @@ private:
 #endif
 ```
 
-Most of the functions are self-explanatory. *Initialize* method initializes the game, *RunLoop* starts the loop and *Shutdown* shuts down the game. *ProcessInput*, *UpdateGame*, *GenerateOutput* are the three steps of the game loop. SDL_Window is the reference to the window and the boolean is used to determine if the game loop should continue to run.
+Most of the functions are self-explanatory. *Initialize* method initializes the game, *RunLoop* starts the loop and *Shutdown* shuts down the game. *ProcessInput*, *UpdateGame*, *GenerateOutput* are the three steps of the game loop. *SDL_Window* is the reference to the window in which our game will be shown and the boolean is used to determine if the game loop should continue to run.
 
 Now let’s move on to implementing the functions in *Game.cpp*. The constructor initializes the window to *nullptr* and the boolean is set to *true*.
 
@@ -158,7 +154,7 @@ bool Game::Initialize()
 }
 ```
 
-If the library initialized successfully, we move on to creating the window with the SDL_CreateWindow function. And we need to check if creation was successful. If it was then return *true*.
+If the library initialized successfully, we move on to creating the window with the *SDL_CreateWindow* function. And we need to check if creation was successful. If it was then return *true*.
 
 ```cpp
 bool Game::Initialize()
@@ -306,9 +302,9 @@ Now we can finally close the game with the methods written above.
 
 Next step is drawing some graphics in the window. To explain in the simplest way, the screen is a two-dimensional grid of pixels. Every pixel has a corresponding value, which represents the color and intensity of the radiating light. These values are stored in an array that is called the **color buffer**. Whenever we are going to "generate output", we’ll be changing values in the color buffer. But this operation is not instantaneous, which will introduce **screen tear** - a state when some part of the displayed image is updated, while the other is not. To avoid this problem we can have two color buffers. While one of them is shown on the screen, we’ll update the second one, and swap them. This technique is called **double buffering**.
 
-We’ve covered the minimal required theory for drawing something on the screen. There are a lot of good articles about graphics and I’ll add the links to a couple of them at the end of this post. Let’s constrain ourselves to showing a simple wireframe object that moves when pressing W, A, S or D buttons on the keyboard.
+We’ve covered the minimal required theory for drawing something on the screen. There are a lot of good articles about graphics and I’ll add the links to a couple of them at the end of this post. Let’s constrain ourselves to showing a simple rectangular object that moves when pressing W, A, S or D buttons on the keyboard.
 
-SDL can be used for drawing 2D graphics as well, but first we need a renderer (a system that draws graphics). First let’s add a reference to it in *Game.hpp*.
+Other than input processing, SDL can be used for drawing 2D graphics as well, but first we need a renderer (a system that draws graphics). First let’s add a reference to it in *Game.hpp*.
 
 ```cpp
 SDL_Renderer* mRenderer;
@@ -317,12 +313,17 @@ SDL_Renderer* mRenderer;
 And now we need to initialize it after creating the window, so it should be done in *Game::Initialize* function like so:
 
 ```cpp
-mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-if (!mRenderer)
+bool Game::Initialize()
 {
-	SDL_Log("Failed to create renderer: %s", SDL_GetError());
-	return false;
+    // Other code here...
+
+	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+	if (!mRenderer)
+	{
+		SDL_Log("Failed to create renderer: %s", SDL_GetError());
+		return false;
+	}
 }
 ```
 
@@ -359,7 +360,7 @@ void Game::GenerateOutput()
 }
 ```
 
-This was only the first step. We’ll skip the next step (drawing the scene) and to swap the front and back buffers, we’ll call *SDL_RenderPresent*.
+This was only the first step. We’ll skip the next step (drawing the scene), and to swap the front and back buffers we’ll call *SDL_RenderPresent*.
 
 ```cpp
 void Game::GenerateOutput()
@@ -373,9 +374,7 @@ void Game::GenerateOutput()
 
 With this we have a window with a blue background color.
 
-### DRAWING THE CHARACTER
-
-To draw our character we’ll use *SDL_RenderFillRect* function, which draws a rectangle with the provided width and height at a specified position. But first we need to change the color with which SDL draws, so that we can see the character.
+Now on to drawing our character. For that we’ll use *SDL_RenderFillRect* function, which draws a rectangle with the provided width and height at a specified position. But first we need to change the color with which SDL draws, so that we can see the character.
 
 ```cpp
 void Game::GenerateOutput()
@@ -394,15 +393,13 @@ void Game::GenerateOutput()
 	};
 	SDL_RenderFillRect(mRenderer, &character);
 
-	// Present code
+	// Swap the front and back buffers code
 }
 ```
 
 When we run the application now, we can see a white rectangle in the center of the screen.
 
-As we are going to change the character’s position in the *UpdateGame* function, let’s store it as a member variable in *Game.hpp*. Declare a *Vector2* struct, which will represent a point in 2D space, and add a member variable for the character’s position and initialize it in the *Initialize* function.
-
-Game.hpp:
+As we are going to change the character’s position in the *UpdateGame* function, let’s store it as a member variable in *Game.hpp*. Declare a *Vector2* struct, which will represent a point in 2D space, and add a member variable for the character’s position.
 
 ```cpp
 #pragma once
@@ -428,7 +425,7 @@ class Game
 #endif
 ```
 
-Game.cpp:
+Now initialize it in the *Initialize* function
 
 ```cpp
 bool Game::Initialize()
@@ -444,12 +441,13 @@ bool Game::Initialize()
 
 And to use the character’s position vector, let’s change the character drawing code:
 
-Game.cpp:
-
 ```cpp
 void Game::GenerateOutput()
 {
-	…
+	// Clear back buffer code
+
+	// Set the character's color
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 
 	// Draw the character
 	SDL_Rect character{
@@ -460,7 +458,7 @@ void Game::GenerateOutput()
 	};
 	SDL_RenderFillRect(mRenderer, &character);
 
-	…
+	// Swap the front and back buffers code
 }
 ```
 
@@ -532,22 +530,18 @@ void Game::ProcessInput()
 
 	mMovementDir.x = 0;
 	mMovementDir.y = 0;
+
 	if (state[SDL_SCANCODE_W])
-	{
 		mMovementDir.y -= 1;
-	}
+
 	if (state[SDL_SCANCODE_S])
-	{
 		mMovementDir.y += 1;
-	}
+
 	if (state[SDL_SCANCODE_A])
-	{
 		mMovementDir.x -= 1;
-	}
+
 	if (state[SDL_SCANCODE_D])
-	{
 		mMovementDir.x += 1;
-	}
 }
 ```
 
@@ -570,21 +564,28 @@ void Game::UpdateGame()
 {
 	// Other code here...
 	
-	if (mCharacterPos.y < (100.0f / 2.0f))
+	float minXPos = 100.0f / 2.0f;
+	float minYPos = 100.0f / 2.0f;
+
+	float maxXPos = 1024.0f - 100.0f / 2.0f;
+	float maxYPos = 768.0f - 100.0f / 2.0f;
+
+	if (mCharacterPos.x < minXPos)
 	{
-		mCharacterPos.y = 100.0f / 2.0f;
+		mCharacterPos.x = minXPos;
 	}
-	else if (mCharacterPos.y > (768.0f - 100.0f / 2.0f))
+	else if (mCharacterPos.x > maxXPos)
 	{
-		mCharacterPos.y = 768.0f - 100.0f / 2.0f;
+		mCharacterPos.x = maxXPos;
 	}
-	if (mCharacterPos.x < (100.0f / 2.0f))
+
+	if (mCharacterPos.y < minYPos)
 	{
-		mCharacterPos.x = 100.0f / 2.0f;
+		mCharacterPos.y = minYPos;
 	}
-	else if (mCharacterPos.x > (1024.0f - 100.0f / 2.0f))
+	else if (mCharacterPos.y > maxYPos)
 	{
-		mCharacterPos.x = 1024.0f - 100.0f / 2.0f;
+		mCharacterPos.y = maxYPos;
 	}
 }
 ```
@@ -592,3 +593,4 @@ void Game::UpdateGame()
 With this code in place we achieved this part's goal of drawing and controlling a rectangular character.
 
 ## Conclusion
+
