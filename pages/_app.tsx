@@ -10,8 +10,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <Head>
         <link rel="icon" href="/logo.png" />
         <meta name="author" content="Arman Matinyan" />
-        <meta name="twitter:creator" content="Arman Matinyan" />
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:creator" content="@Snowblazed" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Snowblazed" />
         <meta property="og:type" content="website" />
       </Head>
       <ChakraProvider theme={theme}>
