@@ -12,7 +12,8 @@ Creating your own video game is the dream of almost any kid, gamer or software d
 
 ## What is a game engine?
 
-The expression **"game engine"** is used a lot lately, but what is it exactly? Is it a library, a tool or maybe an IDE? In fact it's all of them. The simplest one would be in the form of a library and the most sophisticated solution is in the IDE form. There is even a game in which you can write other games. That's just mind-blowing, right?
+So, **"game engine"**, huh. What do you actually imagine when hearing that term? Is it a library, a tool or maybe an IDE? In fact it's all of them. The simplest one would be in the form of a library and the most sophisticated solution is in the IDE form. There is even a game in which you can write other games (that counts as a game engine). That's just mind-blowing, right?
+
 Most engines have very complicated architectures with lots of modules and submodules. Learning about them can be overwhelming, so why do we actually need engines? Well the primary reason is that most of the time we want to write a game.
 
 ## Where do we start?
@@ -38,6 +39,7 @@ The game loop is a loop that controls the flow of the game program. It executes 
 3. generate output
 
 Other than the input media mentioned above, we can imagine a game receiving input over the network if we support online multiplayer for example. Or a game that uses the camera or GPS service. As for the output, it can be in the form of graphics, an audio clip, controller's force feedback, etc.
+
 In our case, firstly, we will be detecting the user's keyboard input. Then the game will update the position of our character based on the input. And lastly we'll render it onto our screen. This is a very simple approach to get a game up and running in no time.
 
 ## Essentials
@@ -588,5 +590,8 @@ void Game::UpdateGame()
 
 With this code in place we achieved this part's goal of drawing and controlling a rectangular character.
 
-## Conclusion
+## Closing
 
+While this is a simple "Hello World"-like project, on this journey we will be developing the architecture of our engine and adding more features as we go. The next part will be about encapsulating character behaviour and adding some simple physics.
+
+Thanks for reading and if you have any thoughts/questions, I would love to hear them on twitter: [@Snowblazed](https://twitter.com/Snowblazed).
