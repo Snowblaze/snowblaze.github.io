@@ -5,7 +5,7 @@ coverImage: "/Introduction/getting-started-cover.jpg"
 date: "2022-06-18T12:00:00.000Z"
 author: Arman Matinyan
 ogImage: "/Introduction/getting-started-og.jpg"
-readTime: "15 min"
+readTime: "10 min"
 ---
 
 Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll be exploring how to write a simple engine for a hobby game project (yeah, I know, seems like reinventing the wheel, haha). In this part we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
@@ -300,7 +300,7 @@ Now we can finally close the game with the methods written above.
 
 Next step is drawing some graphics in the window. To explain in the simplest way, the screen is a two-dimensional grid of pixels. Every pixel has a corresponding value, which represents the color and intensity of the radiating light. These values are stored in an array that is called the **color buffer**. Whenever we are going to "generate output", we’ll be changing values in the color buffer. But this operation is not instantaneous, which will introduce **screen tear** - a state when some part of the displayed image is updated, while the other is not. To avoid this problem we can have two color buffers. While one of them is shown on the screen, we’ll update the second one, and swap them. This technique is called **double buffering**.
 
-We’ve covered the minimal required theory for drawing something on the screen. There are a lot of good articles about graphics and I’ll add the links to a couple of them at the end of this post. Let’s constrain ourselves to showing a simple rectangular object that moves when pressing W, A, S or D buttons on the keyboard.
+We’ve covered the minimal required theory for drawing something on the screen. Let’s constrain ourselves to showing a simple rectangular object that moves when pressing W, A, S or D buttons on the keyboard.
 
 Other than input processing, SDL can be used for drawing 2D graphics as well, but first we need a renderer (a system that draws graphics). First let’s add a reference to it in *Game.hpp*.
 
@@ -519,7 +519,7 @@ Let's add a vector in *Game.hpp* for storing the movement direction of our chara
 Vector2 mMovementDir;
 ```
 
-Now we can handle W, A, S, D keyboard buttons in the ProcessInput function and update the movement direction:
+Now we can handle W, A, S, D keyboard buttons in the *ProcessInput* function and update the movement direction:
 
 ```cpp
 void Game::ProcessInput()
