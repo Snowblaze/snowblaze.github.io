@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../ui/Theme";
 import "../styles/globals.css";
@@ -18,6 +19,24 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-KHR99SNSP0"
+        strategy="afterInteractive"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+      >
+        {
+          `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-KHR99SNSP0');
+          `
+        }
+      </Script>
     </>
   );
 };
