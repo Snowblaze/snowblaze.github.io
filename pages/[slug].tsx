@@ -19,8 +19,8 @@ const Post: FC<Props> = ({
       <Seo
         title={post.title}
         description={post.excerpt}
-        ogImageUrl={`https://snowblaze.github.io${post.ogImage}`}
-        url={`https://snowblaze.github.io/${post.slug}`}
+        ogImageUrl={`https://www.snowblazed.com${post.ogImage}`}
+        url={`https://www.snowblazed.com/${post.slug}`}
       />
       <article>
         <PostHeader

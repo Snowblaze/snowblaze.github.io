@@ -19,8 +19,8 @@ const Home: NextPage<Props> = ({
       <Seo
         title="Snowblaze"
         description="Personal blog on game development by Arman Matinyan"
-        ogImageUrl={`https://snowblaze.github.io${OgImage.src}`}
-        url="https://snowblaze.github.io"
+        ogImageUrl={`https://www.snowblazed.com${OgImage.src}`}
+        url="https://www.snowblazed.com"
       />
       <Box>
         {
