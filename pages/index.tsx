@@ -22,13 +22,7 @@ const Home: NextPage<Props> = ({
         ogImageUrl={`https://snowblaze.github.io${OgImage.src}`}
         url="https://snowblaze.github.io"
       />
-      <Box
-        sx={{
-          ":not(:first-of-type)": {
-            marginTop: "16px",
-          },
-        }}
-      >
+      <Box>
         {
           allPosts.map((post, index) => (
             <PostPreview

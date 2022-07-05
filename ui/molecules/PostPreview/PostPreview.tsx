@@ -47,6 +47,9 @@ const PostPreview: FC<Props> = ({
                         0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
           },
           transition: "all 300ms ease",
+          ":not(:first-of-type)": {
+            marginTop: "16px",
+          },
         }}
       >
         <Box
