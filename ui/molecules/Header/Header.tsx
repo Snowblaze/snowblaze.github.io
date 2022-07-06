@@ -66,7 +66,7 @@ const Header = () => {
                 },
               }}
             >
-              <Image src="/logo.png" layout="fill" />
+              <Image src="/logo.png" layout="fill" placeholder="blur" />
             </Box>
             <Box>
               <Heading>
