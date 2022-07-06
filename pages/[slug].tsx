@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { GetStaticProps } from "next";
+import { getPlaiceholder } from "plaiceholder";
 import { getAllPosts, getPostBySlug } from "../lib/api";
 import Post from "../types/Post";
 import Layout from "../ui/molecules/Layout";
@@ -9,10 +10,16 @@ import Seo from "../components/Seo";
 
 type Props = {
   post: Post,
+  coverImage: {
+    src: string,
+  },
+  coverImageBase64: string,
 }
 
 const Post: FC<Props> = ({
   post,
+  coverImage,
+  coverImageBase64,
 }) => {
   return (
     <Layout>
@@ -25,7 +32,8 @@ const Post: FC<Props> = ({
       <article>
         <PostHeader
           title={post.title}
-          coverImage={post.coverImage}
+          coverImage={coverImage.src}
+          coverImageBase64={coverImageBase64}
           date={post.date}
           readTime={post.readTime}
         />
@@ -62,9 +70,17 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({ 
     "readTime",
   ]);
 
+  const coverImage = await getPlaiceholder(
+    post.coverImage,
+    {
+      size: 10,
+    }
+  );
   return {
     props: {
       post,
+      coverImage: coverImage.img,
+      coverImageBase64: coverImage.base64,
     },
   };
 }

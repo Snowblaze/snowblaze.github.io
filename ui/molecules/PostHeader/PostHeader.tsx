@@ -7,6 +7,7 @@ import transformDate from "../../../lib/date";
 type Props = {
   title: string,
   coverImage: string,
+  coverImageBase64: string,
   date: string,
   readTime: string,
 }
@@ -14,6 +15,7 @@ type Props = {
 const PostHeader: FC<Props> = ({
   title,
   coverImage,
+  coverImageBase64,
   date,
   readTime,
 }) => {
@@ -34,6 +36,7 @@ const PostHeader: FC<Props> = ({
           objectFit="cover"
           priority
           placeholder="blur"
+          blurDataURL={coverImageBase64}
         />
       </Box>
       <Heading mt="32px" mb="16px" textAlign="center" as="h1" size="xl">
