@@ -11,6 +11,7 @@ import {
   SunIcon,
 } from "@chakra-ui/icons";
 import Link from "next/link";
+import logo from "../../../public/logo.png";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -66,7 +67,7 @@ const Header = () => {
                 },
               }}
             >
-              <Image src="/logo.png" layout="fill" placeholder="blur" />
+              <Image src={logo} layout="fill" placeholder="blur" />
             </Box>
             <Box>
               <Heading>

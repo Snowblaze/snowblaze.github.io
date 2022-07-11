@@ -1,8 +1,11 @@
 // @ts-nocheck
 import { FC } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { Box, Heading, Link, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react";
 import CodeBlock from "../../../components/CodeBlock";
+import 'katex/dist/katex.min.css';
 
 type Props = {
   content: string,
@@ -14,6 +17,12 @@ const PostBody: FC<Props> = ({
   return (
     <Box>
       <ReactMarkdown
+        remarkPlugins={[
+          remarkMath,
+        ]}
+        rehypePlugins={[
+          rehypeKatex,
+        ]}
         components={{
           h1: ({node, ...props}) => {
             return (
