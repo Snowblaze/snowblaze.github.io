@@ -6,6 +6,8 @@ date: "2022-10-15T17:00:00.000Z"
 author: Arman Matinyan
 ogImage: "/SimplePhysics/simple-physics-og.jpg"
 readTime: "10 min"
+previousSlug: "getting-started"
+previousTitle: "Part 1: Introduction"
 ---
 
 Physics is a huge discipline and lots of its areas might be useful in games, but when we talk about physics in a game, usually we refer to classical mechanics. It is used to give objects in games the feel of being a solid entity, with mass, inertia, buoyancy and bounce. In this part we'll limit ourselves to adding some simple physics calculations for gravity and make our character fall.
@@ -49,9 +51,35 @@ We'll be adding more functionality to the class as we go.
 
 For defining particles we need to understand a couple of calculus concepts.
 
-The differential of a quantity can be viewed as the rate that it is changing. For example, let's think about the position of a moving object. In the next frame the position will be slightly different, and given two positions we can determine the rate it is changing over time, a.k.a. **velocity**.
+The differential of a quantity can be viewed as the rate that it is changing. For example, let's think about the position of a moving object. In the next frame the position will be slightly different, and given two positions we can determine the rate it is changing over time, a.k.a. **velocity**. This can be expressed as:
+
+$$
+v = \frac{p' - p}{Δt} = \frac{Δp}{Δt}
+$$
+
+To get the exact velocity of the object, we need to minimize the time passed. In math, this is expressed with limit notation:
+
+$$
+v = \lim\limits_{t→0}\frac{Δp}{Δt}
+$$
+
+Instead of using this notation, more commonly this is written like so:
+
+$$
+v = \lim\limits_{t→0}\frac{Δp}{Δt} = \frac{dp}{dt}
+$$
+
+As it is common to observe some change with respect to time, we can simplify the above like this:
+
+$$
+v = \lim\limits_{t→0}\frac{Δp}{Δt} = \frac{dp}{dt} = \dot{p}
+$$
 
 The same goes for **acceleration**. It is the rate that velocity is changing. In physics, acceleration can mean both positive and negative values. Positive acceleration represents speeding up, negative - slowing down, and zero value means that velocity doesn't change.
+
+$$
+a = \lim\limits_{t→0}\frac{Δv}{Δt} = \frac{dv}{dt} = \frac{d}{dt}\frac{dp}{dt} = \frac{d^2p}{dt^2} = \ddot{p}
+$$
 
 Let's put our *Particle* class in a corresponding header file named *particle.hpp*:
 

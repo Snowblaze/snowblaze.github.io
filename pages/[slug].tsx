@@ -6,6 +6,7 @@ import Post from "../types/Post";
 import Layout from "../ui/molecules/Layout";
 import PostHeader from "../ui/molecules/PostHeader";
 import PostBody from "../ui/molecules/PostBody";
+import PostFooter from "../ui/molecules/PostFooter";
 import Seo from "../components/Seo";
 
 type Props = {
@@ -38,6 +39,12 @@ const Post: FC<Props> = ({
           readTime={post.readTime}
         />
         <PostBody content={post.content} />
+        <PostFooter
+          nextSlug={post.nextSlug}
+          nextTitle={post.nextTitle}
+          previousSlug={post.previousSlug}
+          previousTitle={post.previousTitle}
+        />
       </article>
     </Layout>
   );
@@ -68,6 +75,10 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({ 
     "coverImage",
     "excerpt",
     "readTime",
+    "nextSlug",
+    "nextTitle",
+    "previousSlug",
+    "previousTitle",
   ]);
 
   const coverImage = await getPlaiceholder(

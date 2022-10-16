@@ -6,6 +6,8 @@ date: "2022-06-18T12:00:00.000Z"
 author: Arman Matinyan
 ogImage: "/Introduction/getting-started-og.jpg"
 readTime: "10 min"
+nextSlug: "simple-physics"
+nextTitle: "Part 2: Simple Physics"
 ---
 
 Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll be exploring how to write a simple engine for a hobby game project (yeah, I know, seems like reinventing the wheel, haha). In this part we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
