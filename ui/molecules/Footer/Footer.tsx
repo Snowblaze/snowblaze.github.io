@@ -1,5 +1,5 @@
 import { Box, Icon, IconButton, Link, Text } from "@chakra-ui/react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTwitter, FaMastodon } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -23,6 +23,19 @@ const Footer = () => {
           gap: "4px",
         }}
       >
+        <Link
+          href="https://mastodon.gamedev.place/@snowblazed"
+          isExternal
+        >
+          <IconButton
+            aria-label="Open Mastodon"
+            icon={<Icon as={FaMastodon} />}
+            fontSize="20px"
+            size="sm"
+            isRound
+            variant="ghost"
+          />
+        </Link>
         <Link
           href="https://twitter.com/Snowblazed"
           isExternal

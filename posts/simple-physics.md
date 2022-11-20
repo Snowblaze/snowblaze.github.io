@@ -8,6 +8,8 @@ ogImage: "/SimplePhysics/simple-physics-og.jpg"
 readTime: "10 min"
 previousSlug: "getting-started"
 previousTitle: "Part 1: Introduction"
+nextSlug: "collisions"
+nextTitle: "Part 3: Collisions"
 ---
 
 Physics is a huge discipline and lots of its areas might be useful in games, but when we talk about physics in a game, usually we refer to classical mechanics. It is used to give objects in games the feel of being a solid entity, with mass, inertia, buoyancy and bounce. In this part we'll limit ourselves to adding some simple physics calculations for gravity and make our character fall.

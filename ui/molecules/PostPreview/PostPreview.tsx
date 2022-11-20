@@ -1,10 +1,11 @@
 import { FC } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import Image from "next/image";
 import {
   Box,
   Heading,
   Icon,
+  Link,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
@@ -31,8 +32,8 @@ const PostPreview: FC<Props> = ({
   const { colorMode } = useColorMode();
 
   return (
-    <Link href={`/${slug}`}>
-      <Box
+    <NextLink href={`/${slug}`} passHref>
+      <Link
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -43,6 +44,7 @@ const PostPreview: FC<Props> = ({
           overflow: "hidden",
           border: "1px solid #eaeaea",
           ":hover": {
+            textDecoration: 'none',
             boxShadow: `0 1px 2px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"},
                         0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
           },
@@ -122,8 +124,8 @@ const PostPreview: FC<Props> = ({
             </Text>
           </Box>
         </Box>
-      </Box>
-    </Link>
+      </Link>
+    </NextLink>
   );
 };
 

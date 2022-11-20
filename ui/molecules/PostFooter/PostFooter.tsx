@@ -1,6 +1,11 @@
 import { FC } from "react";
-import Link from "next/link";
-import { Box, Heading, useColorMode } from "@chakra-ui/react";
+import NextLink from "next/link";
+import {
+  Box,
+  Heading,
+  Link,
+  useColorMode,
+} from "@chakra-ui/react";
 
 type Props = {
   nextSlug: string,
@@ -25,8 +30,8 @@ const PostFooter: FC<Props> = ({
     >
       {
         previousSlug && (
-          <Link href={`/${previousSlug}`}>
-            <Box
+          <NextLink href={`/${previousSlug}`} passHref>
+            <Link
               sx={{
                 padding: "16px",
                 marginRight: "auto",
@@ -34,8 +39,9 @@ const PostFooter: FC<Props> = ({
                 borderRadius: "16px",
                 border: "1px solid #eaeaea",
                 ":hover": {
+                  textDecoration: 'none',
                   boxShadow: `0 1px 2px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"},
-                        0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
+                          0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
                 },
                 transition: "all 300ms ease",
               }}
@@ -43,14 +49,14 @@ const PostFooter: FC<Props> = ({
               <Heading as="h4" size="sm">
                 {previousTitle}
               </Heading>
-            </Box>
-          </Link>
+            </Link>
+          </NextLink>
         )
       }
       {
         nextSlug && (
-          <Link href={`/${nextSlug}`}>
-            <Box
+          <NextLink href={`/${nextSlug}`} passHref>
+            <Link
               sx={{
                 padding: "16px",
                 marginLeft: "auto",
@@ -58,8 +64,9 @@ const PostFooter: FC<Props> = ({
                 borderRadius: "16px",
                 border: "1px solid #eaeaea",
                 ":hover": {
+                  textDecoration: 'none',
                   boxShadow: `0 1px 2px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"},
-                        0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
+                          0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
                 },
                 transition: "all 300ms ease",
               }}
@@ -67,8 +74,8 @@ const PostFooter: FC<Props> = ({
               <Heading as="h4" size="sm">
                 {nextTitle}
               </Heading>
-            </Box>
-          </Link>
+            </Link>
+          </NextLink>
         )
       }
     </Box>
