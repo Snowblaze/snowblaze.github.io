@@ -8,6 +8,8 @@ ogImage: "/Collisions/collisions-og.jpg"
 readTime: "20 min"
 previousSlug: "simple-physics"
 previousTitle: "Part 2: Simple Physics"
+nextSlug: "rigidbodies"
+nextTitle: "Part 4: Rotation"
 ---
 
 In a game world, engineers try to explicitly ensure that objects don't pass through each other.
