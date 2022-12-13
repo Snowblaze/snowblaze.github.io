@@ -402,12 +402,12 @@ class Particle
         position.y = y;
     }
 
-    void Particle::getPosition(Vector2* positionPtr) const
+    void getPosition(Vector2* positionPtr) const
     {
         *positionPtr = position;
     }
 
-    Vector2 Particle::getPosition() const
+    Vector2 getPosition() const
     {
         return position;
     }
@@ -484,22 +484,22 @@ protected:
     // Other code here...
 
 public:
-    void Particle::setDamping(const float value)
+    void setDamping(const float value)
     {
         damping = value;
     }
 
-    float Particle::getDamping() const
+    float getDamping() const
     {
         return damping;
     }
     
-    void Particle::setAcceleration(const Vector2& value)
+    void setAcceleration(const Vector2& value)
     {
         acceleration = value;
     }
 
-    void Particle::setAcceleration(const float x, const float y)
+    void setAcceleration(const float x, const float y)
     {
         acceleration.x = x;
         acceleration.y = y;
