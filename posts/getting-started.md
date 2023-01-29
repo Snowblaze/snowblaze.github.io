@@ -594,6 +594,6 @@ With this code in place we achieved this part's goal of drawing and controlling 
 
 ## Closing
 
-While this is a simple "Hello World"-like project, on this journey we will be developing the architecture of our engine and adding more features as we go. The next part will be about encapsulating character behaviour and adding some simple physics.
+While this is a simple "Hello World"-like project, on this journey we will be developing the architecture of our engine and adding more features as we go. The next part will be about adding some simple physics.
 
 Thanks for reading and if you have any thoughts/questions, I would love to hear them on twitter: [@Snowblazed](https://twitter.com/Snowblazed).

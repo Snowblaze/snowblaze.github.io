@@ -7,7 +7,6 @@ import {
   Icon,
   Link,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
 import { BsBook } from "react-icons/bs";
 import transformDate from "../../../lib/date";
@@ -28,105 +27,100 @@ const PostPreview: FC<Props> = ({
   excerpt,
   slug,
   readTime,
-}) => {
-  const { colorMode } = useColorMode();
-
-  return (
-    <NextLink href={`/${slug}`} passHref>
-      <Link
+}) => (
+  <NextLink href={`/${slug}`} passHref>
+    <Link
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        cursor: "pointer",
+        borderRadius: "16px",
+        overflow: "hidden",
+        border: "1px solid #eaeaea",
+        ":hover": {
+          textDecoration: 'none',
+          boxShadow: `0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 2px 4px 0 rgba(0, 0, 0, 0.05)`,
+        },
+        transition: "all 300ms ease",
+        ":not(:first-of-type)": {
+          marginTop: "16px",
+        },
+      }}
+    >
+      <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          cursor: "pointer",
-          borderRadius: "16px",
-          overflow: "hidden",
-          border: "1px solid #eaeaea",
-          ":hover": {
-            textDecoration: 'none',
-            boxShadow: `0 1px 2px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"},
-                        0 2px 4px 0 ${colorMode === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(200, 200, 200, 0.5)"}`,
+          display: {
+            base: "none",
+            md: "flex",
           },
-          transition: "all 300ms ease",
-          ":not(:first-of-type)": {
-            marginTop: "16px",
-          },
+          position: "relative",
+        }}
+      >
+        <Image
+          src={coverImage}
+          alt={`Cover Image for ${title}`}
+          width="294px"
+          height="165px"
+          objectFit="cover"
+        />
+      </Box>
+      <Box
+        sx={{
+          flex: 1,
+          padding: "16px",
         }}
       >
         <Box
           sx={{
-            display: {
-              base: "none",
-              md: "flex",
-            },
-            position: "relative",
+            marginBottom: "8px",
           }}
         >
-          <Image
-            src={coverImage}
-            alt={`Cover Image for ${title}`}
-            width="294px"
-            height="165px"
-            objectFit="cover"
-          />
+          <Heading as="h3" size="md">
+            {title}
+          </Heading>
         </Box>
         <Box
           sx={{
-            flex: 1,
-            padding: "16px",
+            display: "flex",
+            gap: "12px",
+            alignItems: "center",
+            marginTop: "8px",
+            marginBottom: "8px",
           }}
         >
-          <Box
-            sx={{
-              marginBottom: "8px",
-            }}
-          >
-            <Heading as="h3" size="md">
-              {title}
-            </Heading>
-          </Box>
+          <Text color="gray.500" fontSize="sm">
+            <time dateTime={date}>{transformDate(date)}</time>
+          </Text>
+          <Text color="gray.500" fontSize="sm">
+            •
+          </Text>
           <Box
             sx={{
               display: "flex",
-              gap: "12px",
+              gap: "8px",
               alignItems: "center",
-              marginTop: "8px",
-              marginBottom: "8px",
             }}
           >
+            <Icon as={BsBook} color="gray.500" fontSize="sm" />
             <Text color="gray.500" fontSize="sm">
-              <time dateTime={date}>{transformDate(date)}</time>
-            </Text>
-            <Text color="gray.500" fontSize="sm">
-              •
-            </Text>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "8px",
-                alignItems: "center",
-              }}
-            >
-              <Icon as={BsBook} color="gray.500" fontSize="sm" />
-              <Text color="gray.500" fontSize="sm">
-                {`${readTime} read`}
-              </Text>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              marginTop: "8px",
-            }}
-          >
-            <Text noOfLines={2}>
-              {excerpt}
+              {`${readTime} read`}
             </Text>
           </Box>
         </Box>
-      </Link>
-    </NextLink>
-  );
-};
+        <Box
+          sx={{
+            marginTop: "8px",
+          }}
+        >
+          <Text noOfLines={2}>
+            {excerpt}
+          </Text>
+        </Box>
+      </Box>
+    </Link>
+  </NextLink>
+);
 
 export default PostPreview;

@@ -21,34 +21,32 @@ const Post: FC<Props> = ({
   post,
   coverImage,
   coverImageBase64,
-}) => {
-  return (
-    <Layout>
-      <Seo
+}) => (
+  <Layout>
+    <Seo
+      title={post.title}
+      description={post.excerpt}
+      ogImageUrl={`https://www.snowblazed.com${post.ogImage}`}
+      url={`https://www.snowblazed.com/${post.slug}`}
+    />
+    <article>
+      <PostHeader
         title={post.title}
-        description={post.excerpt}
-        ogImageUrl={`https://www.snowblazed.com${post.ogImage}`}
-        url={`https://www.snowblazed.com/${post.slug}`}
+        coverImage={coverImage.src}
+        coverImageBase64={coverImageBase64}
+        date={post.date}
+        readTime={post.readTime}
       />
-      <article>
-        <PostHeader
-          title={post.title}
-          coverImage={coverImage.src}
-          coverImageBase64={coverImageBase64}
-          date={post.date}
-          readTime={post.readTime}
-        />
-        <PostBody content={post.content} />
-        <PostFooter
-          nextSlug={post.nextSlug}
-          nextTitle={post.nextTitle}
-          previousSlug={post.previousSlug}
-          previousTitle={post.previousTitle}
-        />
-      </article>
-    </Layout>
-  );
-};
+      <PostBody content={post.content} />
+      <PostFooter
+        nextSlug={post.nextSlug}
+        nextTitle={post.nextTitle}
+        previousSlug={post.previousSlug}
+        previousTitle={post.previousTitle}
+      />
+    </article>
+  </Layout>
+);
 
 export const getStaticPaths = async () => {
   const posts = getAllPosts(["slug"]);
