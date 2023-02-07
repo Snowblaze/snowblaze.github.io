@@ -6,6 +6,7 @@ type Props = {
   description?: string,
   ogImageUrl?: string,
   url?: string,
+  extraMeta?: { property: string, content: string }[]
 }
 
 const Seo: FC<Props> = ({
@@ -13,6 +14,7 @@ const Seo: FC<Props> = ({
   description,
   ogImageUrl,
   url,
+  extraMeta,
 }) => {
   return (
     <Head>
@@ -46,6 +48,11 @@ const Seo: FC<Props> = ({
         url && (
           <meta property="og:url" content={url} />
         )
+      }
+      {
+        extraMeta && extraMeta.map((meta, index) => (
+          <meta key={index} property={meta.property} content={meta.content} />
+        ))
       }
     </Head>
   );
