@@ -57,7 +57,7 @@ const Header = () => (
               },
             }}
           >
-            <Image src={logo} layout="fill" placeholder="blur" />
+            <Image src={logo} layout="fill" placeholder="blur" alt="Snowblaze Logo" />
           </Box>
           <Box>
             <Heading>
