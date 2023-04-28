@@ -66,6 +66,9 @@ const Header = () => (
           </Box>
         </Box>
       </Link>
+      <Link href="https://github.com/Snowblaze/sdl2-cmake-starter">
+        SDL Cmake Template
+      </Link>
     </Box>
   </Box>
 );
