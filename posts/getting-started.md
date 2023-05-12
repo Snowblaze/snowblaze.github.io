@@ -100,7 +100,7 @@ and we won't need to download specific files for each platform. This way the lib
 
 In the command line:
 
-```
+```shell
 # Init Git repository
 git init
 
