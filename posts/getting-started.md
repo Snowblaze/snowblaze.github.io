@@ -10,13 +10,20 @@ nextSlug: "simple-physics"
 nextTitle: "Part 2: Simple Physics"
 ---
 
-Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll be exploring how to write a simple engine for a hobby game project (yeah, I know, seems like reinventing the wheel, haha). In this part we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
+Creating your own video game is the dream of almost any kid, gamer or software developer such as myself. It's really easy to accomplish
+using a professional game engine like Unity or Unreal Engine, but understanding what's happening under the hood of a game engine is quite
+tough, as there is an enormous amount of information required. To make it easier, I've decided to start this introductory series, so we'll
+be exploring how to write a simple engine for a hobby game project (yeah, I know, seems like reinventing the wheel, haha). In this part
+we'll create a game, where you can move a rectangular character using W, A, S and D buttons.
 
 ## What is a game engine?
 
-So, **"game engine"**, huh. What do you actually imagine when hearing that term? Is it a library, a tool or maybe an IDE? In fact it's all of them. The simplest one would be in the form of a library and the most sophisticated solution is in the IDE form. There is even a game in which you can write other games (that counts as a game engine). That's just mind-blowing, right?
+So, **"game engine"**, huh. What do you actually imagine when hearing that term? Is it a library, a tool or maybe an IDE? In fact it's all
+of them. The simplest one would be in the form of a library and the most sophisticated solution is in the IDE form. There is even a game in
+which you can write other games (that counts as a game engine). That's just mind-blowing, right?
 
-Most engines have very complicated architectures with lots of modules and submodules. Learning about them can be overwhelming, so why do we actually need engines? Well the primary reason is that most of the time we want to write a game.
+Most engines have very complicated architectures with lots of modules and submodules. Learning about them can be overwhelming, so why do we
+actually need engines? Well the primary reason is that most of the time we want to write a game.
 
 ## Where do we start?
 
@@ -28,62 +35,108 @@ A game requires a way to represent the game world data, e.g.:
 - audio
 - user interface
 
-A solid game also needs interactivity, so it should be able to process the user's input through any media that we want, be it keyboard, mouse, gamepad, microphone to name a few.
+A solid game also needs interactivity, so it should be able to process the user's input through any media that we want, be it keyboard,
+mouse, gamepad, microphone to name a few.
 
 All of this should be done real-time and the game loop will help accomplish that.
 
 ## Game Loop 101
 
-The game loop is a loop that controls the flow of the game program. It executes code on every iteration (frame), as long as the player hasn't closed the game. If a game is able to run the iteration 60 times per second, then we say the game runs at 60 frames per second (FPS). In each frame the game does the following:
+The game loop is a loop that controls the flow of the game program. It executes code on every iteration (frame), as long as the player
+hasn't closed the game. If a game is able to run the iteration 60 times per second, then we say the game runs at 60 frames per second
+(FPS). In each frame the game does the following:
 
 1. process all the inputs
 2. update the game world
 3. generate output
 
-Other than the input media mentioned above, we can imagine a game receiving input over the network if we support online multiplayer for example. Or a game that uses the camera or GPS service. As for the output, it can be in the form of graphics, an audio clip, controller's force feedback, etc.
+Other than the input media mentioned above, we can imagine a game receiving input over the network if we support online multiplayer for
+example. Or a game that uses the camera or GPS service. As for the output, it can be in the form of graphics, an audio clip, controller's
+force feedback, etc.
 
-In our case, firstly, we will be detecting the user's keyboard input. Then the game will update the position of our character based on the input. And lastly we'll render it onto our screen. This is a very simple approach to get a game up and running in no time.
+In our case, firstly, we will be detecting the user's keyboard input. Then the game will update the position of our character based on the
+input. And lastly we'll render it onto our screen. This is a very simple approach to get a game up and running in no time.
 
 ## Essentials
 
-For developing a game we need to set up our environment. My language of choice will be C++ as it is the primary game development language. And the most popular IDE for development with it on Windows is Visual Studio, so I'll be going with Visual Studio Community Edition 2022 (for MacOS – XCode).
+For developing a game we need to set up our environment. My language of choice will be C++ as it is the primary game development language.
+One of the most popular IDEs for development with it is Visual Studio. As I'm on Windows I'll be going with Visual Studio Community Edition 2022
+(for MacOS – Visual Studio Code). For source control we will use Git, it also provides a very useful feature called *submodules*, which
+we will utilize.
 
-1. Download and install Visual Studio ([link](https://visualstudio.microsoft.com/vs/community/))
-2. In the windows for choosing workload, add **Desktop development with C++**
+### Windows
+
+1. Install [Git](https://git-scm.com/download/win) following the instructions provided
+2. Download and install [Visual Studio](https://visualstudio.microsoft.com/vs/community/)
+3. In the windows for choosing workload, add **Desktop development with C++**
     ![Workload](/Introduction/Workload.png)
-3. Create a new CMake project
+4. Create a new CMake project
     ![Create](/Introduction/Create.png)
 
-Unfortunately C++ Standard Library doesn't have any graphics-related libraries built in. For our purposes we should use an external library, such as SDL, which is cross-platform. That will help us make games for many different platforms. Using SDL we can get the user's input, and render our character on screen.
+### MacOS
 
-1. Download the development library from [https://www.libsdl.org/](https://www.libsdl.org/) for your platform
-2. Create a folder named "external" in project's root directory
-3. Create another folder named "sdl" inside the newly created folder and extract the library there
-4. Open the CMakeLists.txt located in the root folder, add the include directory and link the library, so that you have the following:
+1. Install [Git](https://git-scm.com/download/mac) following the instructions provided
+2. Download and install [Visual Studio Code](https://code.visualstudio.com/)
+3. In the extensions tab, install [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
+4. Create a new CMake project following the [instructions](https://code.visualstudio.com/docs/cpp/cmake-linux#_create-a-cmake-project)
+5. Rename *main.cpp* to *game-engine.cpp*
+6. Create a *game-engine* folder and put *game-engine.cpp* inside it
+7. Create a *CMakeLists.txt* file inside the *game-engine* folder and add the following:
+
+```cmake
+# CMakeList.txt : CMake project for game-engine, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.21)
+
+# Add source to this project's executable.
+add_executable (Engine "game-engine.cpp")
+```
+
+Unfortunately C++ Standard Library doesn't have any graphics-related libraries built in. For our purposes we should use an external library,
+such as SDL, which is cross-platform. That will help us make games for many different platforms. Using SDL we can get the user's input,
+and render our character on screen. Let's use git submodules feature to add SDL as a dependency repository, so that it is always up-to-date
+and we won't need to download specific files for each platform. This way the library is built for the platform we are developing on.
+
+In the command line:
+
+```
+# Init Git repository
+git init
+
+# Create a folder for external dependencies
+mkdir external
+cd external
+
+# Add the SDL submodule
+git submodule add -b SDL2 https://github.com/libsdl-org/SDL
+```
+
+Next create a *CMakeLists.txt* inside the *external* folder and add the following:
+
+```cmake
+add_library(external INTERFACE)
+
+add_subdirectory(SDL)
+target_link_libraries(external INTERFACE SDL2-static)
+```
+
+And in the root *CMakeLists.txt* we need to link the external libraries add the following:
 
 ```cmake
 # CMakeList.txt : Top-level CMake project file, do global configuration
 # and include sub-projects here.
-
+#
 cmake_minimum_required (VERSION 3.21)
 
 project (Engine VERSION 0.1)
 
+# Include external dependencies
+add_subdirectory (external)
 # Include sub-projects.
-add_subdirectory ("game-engine")
+add_subdirectory (game-engine)
 
-target_include_directories(Engine PRIVATE "external/sdl/include")
-
-# Support both 32 and 64 bit builds
-if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
-  set(SDL2_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x64/SDL2.lib;${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x64/SDL2main.lib")
-  file(COPY "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x64/SDL2.dll" DESTINATION "${CMAKE_BINARY_DIR}/game-engine")
-else ()
-  set(SDL2_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x86/SDL2.lib;${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x86/SDL2main.lib")
-  file(COPY "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x86/SDL2.dll" DESTINATION ${CMAKE_BINARY_DIR})
-endif ()
-
-target_link_libraries(Engine ${SDL2_LIBRARIES})
+target_link_libraries(Engine PRIVATE external)
 ```
 
 **Note**: In later chapters we will move to using other graphics APIs like Vulkan and Metal.
@@ -133,11 +186,15 @@ private:
 #endif
 ```
 
-Most of the functions are self-explanatory. *Initialize* method initializes the game, *RunLoop* starts the loop and *Shutdown* shuts down the game. *ProcessInput*, *UpdateGame*, *GenerateOutput* are the three steps of the game loop. *SDL_Window* is the reference to the window in which our game will be shown and the boolean is used to determine if the game loop should continue to run.
+Most of the functions are self-explanatory. *Initialize* method initializes the game, *RunLoop* starts the loop and *Shutdown* shuts
+down the game. *ProcessInput*, *UpdateGame*, *GenerateOutput* are the three steps of the game loop. *SDL_Window* is the reference to
+the window in which our game will be shown and the boolean is used to determine if the game loop should continue to run.
 
-Now let’s move on to implementing the functions in *Game.cpp*. The constructor initializes the window to *nullptr* and the boolean is set to *true*.
+Now let’s move on to implementing the functions in *Game.cpp*. The constructor initializes the window to *nullptr* and the boolean is
+set to *true*.
 
-The *Initialize* function initializes the SDL library with *SDL_Init* function, which returns a number and if the number is a non-zero value, then the initialization has failed. If it failed then our function should return *false*.
+The *Initialize* function initializes the SDL library with *SDL_Init* function, which returns a number and if the number is a non-zero
+value, then the initialization has failed. If it failed then our function should return *false*.
 
 ```cpp
 bool Game::Initialize()
@@ -154,7 +211,8 @@ bool Game::Initialize()
 }
 ```
 
-If the library initialized successfully, we move on to creating the window with the *SDL_CreateWindow* function. And we need to check if creation was successful. If it was then return *true*.
+If the library initialized successfully, we move on to creating the window with the *SDL_CreateWindow* function. And we need to check if
+creation was successful. If it was then return *true*.
 
 ```cpp
 bool Game::Initialize()
@@ -175,7 +233,8 @@ bool Game::Initialize()
 }
 ```
 
-In the *Shutdown* function we need to unload the resources, so first we destroy the window with the *SDL_DestroyWindow* function and then close SDL with the *SDL_Quit* function.
+In the *Shutdown* function we need to unload the resources, so first we destroy the window with the *SDL_DestroyWindow* function and
+then close SDL with the *SDL_Quit* function.
 
 ```cpp
 void Game::Shutdown()
@@ -234,7 +293,20 @@ int main()
 }
 ```
 
-With this code in place, we can now run the project, although it will be a blank window for now. But we can’t quit the game now, because *mIsRunning* never changes. Let’s add input processing.
+Update the *CMakeLists.txt* in the *game-engine* folder to include the *Game.hpp* and *Game.cpp* files.
+
+```cmake
+# CMakeList.txt : CMake project for game-engine, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.21)
+
+# Add source to this project's executable.
+add_executable (Engine "game-engine.cpp" "Game.hpp" "Game.cpp")
+```
+
+With this code in place, we can now run the project, although it will be a blank window for now. But we can’t quit the game now,
+because *mIsRunning* never changes. Let’s add input processing.
 
 In any operating system (OS) a user can perform various actions on an application window:
 
@@ -244,7 +316,10 @@ In any operating system (OS) a user can perform various actions on an applicatio
 - resize
 - etc.
 
-When the user does any of these actions, the program receives events from the OS. SDL puts these events into a queue that can be polled. This queue stores events from input devices as well. It can contain multiple events on any frame, so we need to loop over all the events and process the ones we are interested in. Let’s implement this in the *ProcessInput* function using *SDL_PollEvent* function, which returns true if there is an event present in the queue.
+When the user does any of these actions, the program receives events from the OS. SDL puts these events into a queue that can be polled.
+This queue stores events from input devices as well. It can contain multiple events on any frame, so we need to loop over all the events
+and process the ones we are interested in. Let’s implement this in the *ProcessInput* function using *SDL_PollEvent* function, which
+returns true if there is an event present in the queue.
 
 ```cpp
 void Game::ProcessInput()
@@ -259,7 +334,8 @@ void Game::ProcessInput()
 }
 ```
 
-Now let’s add a way to close the game, for example by pressing the close button, keyboard shortcut or the escape button. We can do that by checking the *type* member variable of the event.
+Now let’s add a way to close the game, for example by pressing the close button, keyboard shortcut or the escape button. We can do that
+by checking the *type* member variable of the event.
 
 ```cpp
 void Game::ProcessInput()
@@ -280,7 +356,8 @@ void Game::ProcessInput()
 }
 ```
 
-For detecting the escape button press, we can use *SDL_GetKeyboardState* function, which returns a pointer to an array that contains the state of the keyboard.
+For detecting the escape button press, we can use *SDL_GetKeyboardState* function, which returns a pointer to an array that contains the
+state of the keyboard.
 
 ```cpp
 void Game::ProcessInput()
@@ -300,11 +377,18 @@ void Game::ProcessInput()
 
 Now we can finally close the game with the methods written above.
 
-Next step is drawing some graphics in the window. To explain in the simplest way, the screen is a two-dimensional grid of pixels. Every pixel has a corresponding value, which represents the color and intensity of the radiating light. These values are stored in an array that is called the **color buffer**. Whenever we are going to "generate output", we’ll be changing values in the color buffer. But this operation is not instantaneous, which will introduce **screen tear** - a state when some part of the displayed image is updated, while the other is not. To avoid this problem we can have two color buffers. While one of them is shown on the screen, we’ll update the second one, and swap them. This technique is called **double buffering**.
+Next step is drawing some graphics in the window. To explain in the simplest way, the screen is a two-dimensional grid of pixels. Every
+pixel has a corresponding value, which represents the color and intensity of the radiating light. These values are stored in an array
+that is called the **color buffer**. Whenever we are going to "generate output", we’ll be changing values in the color buffer. But this
+operation is not instantaneous, which will introduce **screen tear** - a state when some part of the displayed image is updated, while
+the other is not. To avoid this problem we can have two color buffers. While one of them is shown on the screen, we’ll update the second
+one, and swap them. This technique is called **double buffering**.
 
-We’ve covered the minimal required theory for drawing something on the screen. Let’s constrain ourselves to showing a simple rectangular object that moves when pressing W, A, S or D buttons on the keyboard.
+We’ve covered the minimal required theory for drawing something on the screen. Let’s constrain ourselves to showing a simple rectangular
+object that moves when pressing W, A, S or D buttons on the keyboard.
 
-Other than input processing, SDL can be used for drawing 2D graphics as well, but first we need a renderer (a system that draws graphics). First let’s add a reference to it in *Game.hpp*.
+Other than input processing, SDL can be used for drawing 2D graphics as well, but first we need a renderer (a system that draws graphics).
+First let’s add a reference to it in *Game.hpp*.
 
 ```cpp
 SDL_Renderer* mRenderer;
@@ -360,7 +444,8 @@ void Game::GenerateOutput()
 }
 ```
 
-This was only the first step. We’ll skip the next step (drawing the scene), and to swap the front and back buffers we’ll call *SDL_RenderPresent*.
+This was only the first step. We’ll skip the next step (drawing the scene), and to swap the front and back buffers we’ll call
+*SDL_RenderPresent*.
 
 ```cpp
 void Game::GenerateOutput()
@@ -374,7 +459,8 @@ void Game::GenerateOutput()
 
 With this we have a window with a blue background color.
 
-Now on to drawing our character. For that we’ll use *SDL_RenderFillRect* function, which draws a rectangle with the provided width and height at a specified position. But first we need to change the color with which SDL draws, so that we can see the character.
+Now on to drawing our character. For that we’ll use *SDL_RenderFillRect* function, which draws a rectangle with the provided width
+and height at a specified position. But first we need to change the color with which SDL draws, so that we can see the character.
 
 ```cpp
 void Game::GenerateOutput()
@@ -399,7 +485,8 @@ void Game::GenerateOutput()
 
 When we run the application now, we can see a white rectangle in the center of the screen.
 
-As we are going to change the character’s position in the *UpdateGame* function, let’s store it as a member variable in *Game.hpp*. Declare a *Vector2* struct, which will represent a point in 2D space, and add a member variable for the character’s position.
+As we are going to change the character’s position in the *UpdateGame* function, let’s store it as a member variable in *Game.hpp*.
+Declare a *Vector2* struct, which will represent a point in 2D space, and add a member variable for the character’s position.
 
 ```cpp
 #pragma once
@@ -462,9 +549,11 @@ void Game::GenerateOutput()
 }
 ```
 
-Character’s movement is the only thing left to implement. To calculate how much should the character move in any direction, we should determine how much time elapsed since the last frame. Let's call that value **delta time**.
+Character’s movement is the only thing left to implement. To calculate how much should the character move in any direction, we should
+determine how much time elapsed since the last frame. Let's call that value **delta time**.
 
-SDL provides a function named *SDL_GetTicks* that returns the number of milliseconds elapsed since the *SDL_Init* call. We can save the result of a previous frame in a variable and use it with the current one to calculate delta time.
+SDL provides a function named *SDL_GetTicks* that returns the number of milliseconds elapsed since the *SDL_Init* call. We can save the
+result of a previous frame in a variable and use it with the current one to calculate delta time.
 
 ```cpp
 Uint32 mTicksCount;
@@ -484,9 +573,11 @@ void Game::UpdateGame()
 }
 ```
 
-It may seem like it will do the trick, but actually there is an issue when running the game with different frame rates, especially if the game relies on physics.
+It may seem like it will do the trick, but actually there is an issue when running the game with different frame rates, especially
+if the game relies on physics.
 
-We can limit the FPS by forcing the game loop to wait until the required delta time is achieved. That is called **frame limiting**. So, if we want 60 FPS and the frame completes in 15ms, the game loop will wait 1.6ms to achieve 16.6ms (1000ms / 60 FPS).
+We can limit the FPS by forcing the game loop to wait until the required delta time is achieved. That is called **frame limiting**.
+So, if we want 60 FPS and the frame completes in 15ms, the game loop will wait 1.6ms to achieve 16.6ms (1000ms / 60 FPS).
 
 SDL provides a function just for that.
 
@@ -500,7 +591,8 @@ void Game::UpdateGame()
 }
 ```
 
-This was only fixing the lower limit, but we still have to fix the upper limit. What if the device takes too long to process a frame or you paused the game at a breakpoint for debugging purposes and later unpaused. To fix this problem we can clamp the delta time.
+This was only fixing the lower limit, but we still have to fix the upper limit. What if the device takes too long to process a frame
+or you paused the game at a breakpoint for debugging purposes and later unpaused. To fix this problem we can clamp the delta time.
 
 ```cpp
 void Game::UpdateGame()
@@ -594,6 +686,7 @@ With this code in place we achieved this part's goal of drawing and controlling 
 
 ## Closing
 
-While this is a simple "Hello World"-like project, on this journey we will be developing the architecture of our engine and adding more features as we go. The next part will be about adding some simple physics.
+While this is a simple "Hello World"-like project, on this journey we will be developing the architecture of our engine and adding
+more features as we go. The next part will be about adding some simple physics.
 
 Thanks for reading and if you have any thoughts/questions, I would love to hear them on twitter: [@Snowblazed](https://twitter.com/Snowblazed).

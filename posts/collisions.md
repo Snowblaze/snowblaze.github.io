@@ -380,7 +380,8 @@ public:
 ```
 
 Negative value means that the objects are not interpenetrating, zero - objects are just touching. If the value is positive,
-the objects are interpenetrating, and after moving them in the direction of the contact normal by that amount, they will no longer be in contact.
+the objects are interpenetrating, and after moving them in the direction of the contact normal by that amount, they will no longer be
+in contact.
 
 Now we got ourselves a problem, how do we determine how much each object should be moved? Simply moving each object by half of the
 interpenetration depth is not believable. We have to take into account the objects' masses. The object with greater mass will move less,
@@ -806,11 +807,13 @@ Lastly, for all of this to work we need to add the newly created *cpp* files to 
 cmake_minimum_required (VERSION 3.21)
 
 add_library (PhysicsEngine core.cpp pcontact.cpp pcontactresolver.cpp groundcontact.cpp)
+target_include_directories (PhysicsEngine INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 ```
 
 ## Closing
 
-After successfully implementing the particle collision detection and resolution system, we will move on to transforming our physics library from particle to rigid-body dynamics. So, in the next chapter we will be refactoring our physics and getting ready to changing our rendering API. 
+After successfully implementing the particle collision detection and resolution system, we will move on to transforming our physics
+library from particle to rigid-body dynamics. So, in the next chapter we will lay the groundwork by implementing 3D rotations.
 
 Thanks for reading and if you have any thoughts/questions, I would love to hear them on twitter [@Snowblazed](https://twitter.com/Snowblazed).
 

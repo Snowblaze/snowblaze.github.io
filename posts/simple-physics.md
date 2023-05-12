@@ -12,15 +12,20 @@ nextSlug: "collisions"
 nextTitle: "Part 3: Collisions"
 ---
 
-Physics is a huge discipline and lots of its areas might be useful in games, but when we talk about physics in a game, usually we refer to classical mechanics. It is used to give objects in games the feel of being a solid entity, with mass, inertia, buoyancy and bounce. In this part we'll limit ourselves to adding some simple physics calculations for gravity and make our character fall.
+Physics is a huge discipline and lots of its areas might be useful in games, but when we talk about physics in a game, usually we refer to
+classical mechanics. It is used to give objects in games the feel of being a solid entity, with mass, inertia, buoyancy and bounce. In this
+part we'll limit ourselves to adding some simple physics calculations for gravity and make our character fall.
 
-The source code is available on GitHub at [https://github.com/Snowblaze-Studio/game-engine](https://github.com/Snowblaze-Studio/game-engine). The final code for this part of the tutorial can be found under the tag "part-2-simple-physics".
+The source code is available on GitHub at [https://github.com/Snowblaze-Studio/game-engine](https://github.com/Snowblaze-Studio/game-engine).
+The final code for this part of the tutorial can be found under the tag "part-2-simple-physics".
 
 ## Laws of motion
 
-Newton discovered three laws of motion that describe how **point masses** behave and physics engines are based on them. A point mass is an object that has mass, but has no size. This term is rarely used in game physics and instead such objects are called **particles**.
+Newton discovered three laws of motion that describe how **point masses** behave and physics engines are based on them. A point mass is an
+object that has mass, but has no size. This term is rarely used in game physics and instead such objects are called **particles**.
 
-Prior to dealing with particles, we should redefine our *Vector2* struct to be a class in a separate from *Game.hpp* file. For that let's create a folder in *external* named *physics-engine* and define our class in *core.hpp* file:
+Prior to dealing with particles, we should redefine our *Vector2* struct to be a class in a separate from *Game.hpp* file. For that let's
+create a folder in *external* named *physics-engine* and define our class in *core.hpp* file:
 
 ```cpp
 #pragma once
@@ -53,7 +58,9 @@ We'll be adding more functionality to the class as we go.
 
 For defining particles we need to understand a couple of calculus concepts.
 
-The differential of a quantity can be viewed as the rate that it is changing. For example, let's think about the position of a moving object. In the next frame the position will be slightly different, and given two positions we can determine the rate it is changing over time, a.k.a. **velocity**. This can be expressed as:
+The differential of a quantity can be viewed as the rate that it is changing. For example, let's think about the position of a moving
+object. In the next frame the position will be slightly different, and given two positions we can determine the rate it is changing over
+time, a.k.a. **velocity**. This can be expressed as:
 
 $$
 v = \frac{p' - p}{Δt} = \frac{Δp}{Δt}
@@ -77,7 +84,8 @@ $$
 v = \lim\limits_{t→0}\frac{Δp}{Δt} = \frac{dp}{dt} = \dot{p}
 $$
 
-The same goes for **acceleration**. It is the rate that velocity is changing. In physics, acceleration can mean both positive and negative values. Positive acceleration represents speeding up, negative - slowing down, and zero value means that velocity doesn't change.
+The same goes for **acceleration**. It is the rate that velocity is changing. In physics, acceleration can mean both positive and negative
+values. Positive acceleration represents speeding up, negative - slowing down, and zero value means that velocity doesn't change.
 
 $$
 a = \lim\limits_{t→0}\frac{Δv}{Δt} = \frac{dv}{dt} = \frac{d}{dt}\frac{dp}{dt} = \frac{d^2p}{dt^2} = \ddot{p}
@@ -111,7 +119,10 @@ protected:
 
 ### The First Law
 
-The first law tells us that an object will continue to move with a constant velocity unless a force acts upon it. In other words, the velocity will never change. In real world, though, the closest phenomenon to that is how objects behave in space. Most of the time some forces act on a body, something like drag forces. We will incorporate some rough approximation in our engine to make sure objects don't accelerate because of processor inaccuracies. Let's call this form of drag **damping** and add a corresponding field to our *Particle* class:
+The first law tells us that an object will continue to move with a constant velocity unless a force acts upon it. In other words, the
+velocity will never change. In real world, though, the closest phenomenon to that is how objects behave in space. Most of the time some
+forces act on a body, something like drag forces. We will incorporate some rough approximation in our engine to make sure objects don't
+accelerate because of processor inaccuracies. Let's call this form of drag **damping** and add a corresponding field to our *Particle* class:
 
 ```cpp
 class Particle
@@ -123,11 +134,15 @@ protected:
 };
 ```
 
-At each update we will be removing some portion of the object's velocity. If drag is 1, velocity won't change, and if drag is 0, the object won't be able to move without a force.
+At each update we will be removing some portion of the object's velocity. If drag is 1, velocity won't change, and if drag is 0, the
+object won't be able to move without a force.
 
 ### The Second Law
 
-The second law tells us how forces affect the motion of an object. They change its acceleration. Because of this law, acceleration should be treated differently to the velocity and position. Latter two change by the process of integration, but acceleration can be different at any moment. We can directly set the acceleration, and the behaviour will still look fine. Because of this, acceleration will be left alone by the integrator, while the other two will not.
+The second law tells us how forces affect the motion of an object. They change its acceleration. Because of this law, acceleration should
+be treated differently to the velocity and position. Latter two change by the process of integration, but acceleration can be different
+at any moment. We can directly set the acceleration, and the behaviour will still look fine. Because of this, acceleration will be left
+alone by the integrator, while the other two will not.
 
 ## Adding forces
 
@@ -143,9 +158,14 @@ $$
 \ddot{p} = \frac{1}{m}f
 $$
 
-Now let's add mass to our particle definition. Each particle needs its own mass. But, we've got a problem. If the mass is zero, then any force will generate infinite acceleration. However, sometimes we want to simulate infinite masses, such objects aren't affected by forces. For example, they could be useful when making floors, walls and anything that should stay in place. This will work if these objects don't have an initial velocity.
+Now let's add mass to our particle definition. Each particle needs its own mass. But, we've got a problem. If the mass is zero, then
+any force will generate infinite acceleration. However, sometimes we want to simulate infinite masses, such objects aren't affected by
+forces. For example, they could be useful when making floors, walls and anything that should stay in place. This will work if these
+objects don't have an initial velocity.
 
-Although, we can't represent a true infinity in code, we can use a neat little trick. Storing 1 over the mass will fix both our problems. This is called **inverse mass**. Infinite mass objects have a zero inverse mass, zero mass objects should have an infinite inverse mass, which is impossible to set in code.
+Although, we can't represent a true infinity in code, we can use a neat little trick. Storing 1 over the mass will fix both our problems.
+This is called **inverse mass**. Infinite mass objects have a zero inverse mass, zero mass objects should have an infinite inverse mass,
+which is impossible to set in code.
 
 ```cpp
 class Particle
@@ -182,7 +202,8 @@ Most of the time we will be using the *setMass* function, as it is more straight
 
 ## Gravity
 
-Gravity is the most important force in a physics engine. It applies between every pair of objects, attracting them together with a force that depends on their mass and distance. The following is the formula Newton developed.
+Gravity is the most important force in a physics engine. It applies between every pair of objects, attracting them together with a force
+that depends on their mass and distance. The following is the formula Newton developed.
 
 $$
 f = G\frac{m_1m_2}{r^2}
@@ -190,7 +211,10 @@ $$
 
 where $m_1$ and $m_2$ are the masses, $r$ is the distance between their centers and $G$ is the "universal gravitational constant".
 
-Using this formula we can see that the effects of gravity between 2 huge objects, such as the size of a planet, are significant, while for 2 small objects like a ball and a rock the effects are small. In our engine we can neglect the gravitational forces between small objects and only take into account the forces between each object and the ground. We can simplify our formula assuming that the mass of the Earth as well as the distance to its center are constant.
+Using this formula we can see that the effects of gravity between 2 huge objects, such as the size of a planet, are significant, while
+for 2 small objects like a ball and a rock the effects are small. In our engine we can neglect the gravitational forces between small
+objects and only take into account the forces between each object and the ground. We can simplify our formula assuming that the mass
+of the Earth as well as the distance to its center are constant.
 
 $$
 f = mg
@@ -208,7 +232,9 @@ $$
 \ddot{p} = \frac{1}{m}mg = g
 $$
 
-No matter what mass an object has, it will always accelerate at the same rate due to gravity. There is no point in always calculating this acceleration, so we will just use a constant value. But using the real value of $9.81ms^{-2}$ can look dull in games, so we will be tweaking the value based on the feeling we want to get. For now let's create *Core.cpp* file and set the gravity there:
+No matter what mass an object has, it will always accelerate at the same rate due to gravity. There is no point in always calculating
+this acceleration, so we will just use a constant value. But using the real value of $9.81ms^{-2}$ can look dull in games, so we will
+be tweaking the value based on the feeling we want to get. For now let's create *Core.cpp* file and set the gravity there:
 
 ```cpp
 #include "include/core.hpp"
@@ -220,12 +246,15 @@ As the gravity acts in vertical direction, we set the acceleration on Y-axis.
 
 ## Physics Update
 
-With all of the above described, we can now implement physics update process, which will be done by the **integrator**. The update function will consist of two parts:
+With all of the above described, we can now implement physics update process, which will be done by the **integrator**. The update
+function will consist of two parts:
 
 - updating the position of an object
 - updating its velocity
 
-Position depends both on the velocity and the acceleration, while velocity depends only on the acceleration. Also, the integrate function requires some elapsed time between frames, a.k.a. **delta time**. Now let's create the *integrate* function in *particle.hpp* and fill it in.
+Position depends both on the velocity and the acceleration, while velocity depends only on the acceleration. Also, the integrate
+function requires some elapsed time between frames, a.k.a. **delta time**. Now let's create the *integrate* function in *particle.hpp*
+and fill it in.
 
 ```cpp
 class Particle
@@ -264,7 +293,8 @@ public:
 
 ### Position Update
 
-Just as the acceleration is the second derivative of the position, the position is the second integral of the acceleration. Thus, we get the following formula for calculating the position:
+Just as the acceleration is the second derivative of the position, the position is the second integral of the acceleration. Thus, we
+get the following formula for calculating the position:
 
 $$
 p' = p + \dot{p}t + \frac{1}{2}\ddot{p}t^2
@@ -280,7 +310,8 @@ void integrate(float deltaTime)
 }
 ```
 
-Actually, the acceleration will not have much of an impact, because half of the squared time at 30 FPS is 0.0005. For this reason we can just ignore the acceleration altogether.
+Actually, the acceleration will not have much of an impact, because half of the squared time at 30 FPS is 0.0005. For this reason we
+can just ignore the acceleration altogether.
 
 $$
 p' = p + \dot{p}t
@@ -305,7 +336,9 @@ $$
 
 where $d$ is the damping.
 
-This formula appears to have a hidden problem. Velocity dampens at each frame by the same factor, so under different conditions object will have different drag. To solve this, we will make damping depend on time, even though calculating a float to the power of another one is a relatively slow operation.
+This formula appears to have a hidden problem. Velocity dampens at each frame by the same factor, so under different conditions object
+will have different drag. To solve this, we will make damping depend on time, even though calculating a float to the power of another
+one is a relatively slow operation.
 
 ```cpp
 void integrate(float deltaTime)
@@ -328,7 +361,8 @@ void integrate(float deltaTime)
 }
 ```
 
-Many engine developers tend to just use a damping value very close to 1, so that for the player it will not be noticeable, but still solving the numerical instability problem.
+Many engine developers tend to just use a damping value very close to 1, so that for the player it will not be noticeable, but still
+solving the numerical instability problem.
 
 To see the gravity working we have to make a couple changes to our character.
 
@@ -380,7 +414,8 @@ bool Game::Initialize()
 }
 ```
 
-Setting the position of a particle is not yet defined in *particle.hpp*, so let's define and implement it. Also, we will add a function for getting the position.
+Setting the position of a particle is not yet defined in *particle.hpp*, so let's define and implement it. Also, we will add a function
+for getting the position.
 
 ```cpp
 class Particle
@@ -435,7 +470,8 @@ void Game::GenerateOutput()
 }
 ```
 
-For now let's remove all the code related to processing input and moving the character from *ProcessInput* and *UpdateGame* functions. Instead, let's integrate our particle on every *UpdateGame* like so:
+For now let's remove all the code related to processing input and moving the character from *ProcessInput* and *UpdateGame* functions.
+Instead, let's integrate our particle on every *UpdateGame* like so:
 
 ```cpp
 void Game::UpdateGame()
@@ -460,7 +496,8 @@ void Game::UpdateGame()
 }
 ```
 
-Even though we have made all these changes, our gravity simulation will not work yet, because the character doesn't have the required attributes set:
+Even though we have made all these changes, our gravity simulation will not work yet, because the character doesn't have the required
+attributes set:
 
 ```cpp
 bool Game::Initialize()
@@ -509,7 +546,8 @@ public:
 }
 ```
 
-Lastly, for all of this to work we need to build our physics library, add it and the newly created include files in the *CMakeLists.txt* of the root folder. Create a *CMakeLists.txt* in the *external/physics-engine* folder and add the following lines:
+Lastly, for all of this to work we need to build our physics library and add it in the *CMakeLists.txt* of the *external* folder.
+Create a *CMakeLists.txt* in the *external/physics-engine* folder and add the following lines:
 
 ```cmake
 # CMakeList.txt : CMake project for game-engine, include source and define
@@ -518,41 +556,28 @@ Lastly, for all of this to work we need to build our physics library, add it and
 cmake_minimum_required (VERSION 3.21)
 
 add_library (PhysicsEngine core.cpp)
+target_include_directories (PhysicsEngine INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 ```
 
-To update the root cmake file, replace its contents with this:
+To update the *external* cmake file, replace its contents with this:
 
 ```cmake
-# CMakeList.txt : Top-level CMake project file, do global configuration
-# and include sub-projects here.
-#
-cmake_minimum_required (VERSION 3.21)
+add_library(external INTERFACE)
 
-project (Engine VERSION 0.1)
+add_subdirectory(SDL)
+target_link_libraries(external INTERFACE SDL2-static)
 
-# Include sub-projects.
-add_subdirectory ("external/physics-engine")
-add_subdirectory ("game-engine")
-
-# Support both 32 and 64 bit builds
-if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
-  set(SDL2_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x64/SDL2.lib;${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x64/SDL2main.lib")
-  file(COPY "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x64/SDL2.dll" DESTINATION "${CMAKE_BINARY_DIR}/game-engine")
-else ()
-  set(SDL2_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x86/SDL2.lib;${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x86/SDL2main.lib")
-  file(COPY "${CMAKE_CURRENT_LIST_DIR}/external/sdl/lib/x86/SDL2.dll" DESTINATION ${CMAKE_BINARY_DIR})
-endif ()
-
-target_link_libraries(Engine PUBLIC ${SDL2_LIBRARIES} PhysicsEngine)
-
-target_include_directories(Engine PRIVATE "external/sdl/include")
-target_include_directories(Engine PUBLIC "${PROJECT_SOURCE_DIR}/external/physics-engine/include")
+add_subdirectory (physics-engine)
+target_link_libraries(external INTERFACE PhysicsEngine)
 ```
 
-Running the project shows our character free-falling, but very slowly. The reason for that is our unit system. The way we defined our world is that each pixel equals 1 unit. We will come back to this issue in another blog post, where we will fix our unit system and make it easily configurable.
+Running the project shows our character free-falling, but very slowly. The reason for that is our unit system. The way we defined our
+world is that each pixel equals 1 unit. We will come back to this issue in another blog post, where we will fix our unit system and make
+it easily configurable.
 
 ## Closing
-We have explored the primary laws of classical mechanics and managed to implement them in the form of a very simplistic physics library. In the next part we will add collisions, so that our character doesn't fall through the bottom border of our window, making it our ground.
+We have explored the primary laws of classical mechanics and managed to implement them in the form of a very simplistic physics library.
+In the next part we will add collisions, so that our character doesn't fall through the bottom border of our window, making it our ground.
 
 Thanks for reading and if you have any thoughts/questions, I would love to hear them on twitter: [@Snowblazed](https://twitter.com/Snowblazed).
 
