@@ -305,6 +305,28 @@ cmake_minimum_required (VERSION 3.21)
 add_executable (Engine "game-engine.cpp" "Game.hpp" "Game.cpp")
 ```
 
+Trying to run the project will fail on some platforms. That's because SDL is redefining our *main* function, which results in
+
+```cpp
+LNK2019	unresolved external symbol _main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+```
+
+Adding **#undef main** before our main function and after including SDL will solve the issue
+
+```cpp
+#include "game-engine.hpp"
+#include "Game.hpp"
+
+#undef main
+
+using namespace std;
+
+int main()
+{
+    // Same code here...
+}
+```
+
 With this code in place, we can now run the project, although it will be a blank window for now. But we can’t quit the game now,
 because *mIsRunning* never changes. Let’s add input processing.
 
