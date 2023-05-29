@@ -8,6 +8,8 @@ ogImage: "/Rotation/rotation-og.jpg"
 readTime: "45 min"
 previousSlug: "collisions"
 previousTitle: "Part 3: Collisions"
+nextSlug: "rigidbody"
+nextTitle: "Part 5: Rigid Body"
 ---
 
 So far we have been exploring physics in regard to particles, but having objects with neither volume nor rotation limits
