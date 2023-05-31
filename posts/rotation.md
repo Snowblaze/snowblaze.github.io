@@ -1417,7 +1417,7 @@ class Matrix3x4
 ```
 
 For now that's it, but if this tiny amount of math piqued your interest, I highly recommend checking out [FGED Volume 1: Mathematics](https://foundationsofgameenginedev.com/)
-by Eric Lengyel. It's a great book that covers almost all the necessary math for game development.
+by [Eric Lengyel](https://twitter.com/EricLengyel). It's a great book that covers almost all the necessary math for game development.
 
 ## Closing
 
