@@ -707,6 +707,7 @@ public:
 
 class Matrix3x4
 {
+public:
     float data[12];
 
     Matrix3x4()
