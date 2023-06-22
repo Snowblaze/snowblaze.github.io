@@ -8,7 +8,7 @@ ogImage: "/Collisions/collisions-og.jpg"
 readTime: "20 min"
 previousSlug: "simple-physics"
 previousTitle: "Part 2: Simple Physics"
-nextSlug: "rigidbodies"
+nextSlug: "rotation"
 nextTitle: "Part 4: Rotation"
 ---
 
