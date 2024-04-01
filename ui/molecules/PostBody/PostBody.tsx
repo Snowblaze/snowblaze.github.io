@@ -5,7 +5,6 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { Box, Heading, Link, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react";
 import CodeBlock from "../../../components/CodeBlock";
-import Newsletter from "../Newsletter";
 import "katex/dist/katex.min.css";
 
 type Props = {
@@ -83,9 +82,6 @@ const PostBody: FC<Props> = ({
       >
         {content}
       </ReactMarkdown>
-      <Box my={6}>
-        <Newsletter />
-      </Box>
     </Box>
   );
 };

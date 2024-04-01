@@ -4,7 +4,6 @@ import Layout from "../ui/molecules/Layout";
 import { getAllPosts } from "../lib/api";
 import Post from "../types/Post";
 import PostPreview from "../ui/molecules/PostPreview";
-import Newsletter from "../ui/molecules/Newsletter";
 import Seo from "../components/Seo";
 import OgImage from "../public/main-og.png";
 
@@ -36,9 +35,6 @@ const Home: NextPage<Props> = ({
           />
         ))
       }
-    </Box>
-    <Box mt={4}>
-      <Newsletter />
     </Box>
   </Layout>
 );
